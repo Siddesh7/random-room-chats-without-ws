@@ -4,6 +4,7 @@ export interface Messages extends mongoose.Document {
   room: string;
   content: string;
   user: string;
+  timestamp: Date;
 }
 
 /* PetSchema will correspond to a collection in your MongoDB database. */
@@ -20,6 +21,10 @@ const MessageSchema = new mongoose.Schema<Messages>({
   user: {
     type: String,
     required: [true, "Please provide a valid user."],
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
   },
 });
 

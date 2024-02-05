@@ -5,6 +5,7 @@ import ChatHeader from "@/app/components/ChatHeader";
 import ChatMessages from "@/app/components/ChatMessages";
 import ChatInput from "@/app/components/ChatInput";
 import {UsernameContext} from "@/app/layout";
+import createNewRoom from "@/app/lib/createNewRoom";
 
 const ChatApp = ({params}: {params: {id: string}}) => {
   const username = useContext(UsernameContext);
@@ -62,11 +63,32 @@ const ChatApp = ({params}: {params: {id: string}}) => {
       console.error("Failed to post data", error);
     }
   };
+  const checkIfRoomExists = async () => {
+    try {
+      console.log("checking if room exists");
+      const url = new URL("/api/rooms", window.location.origin);
+      if (params && params.id) url.searchParams.append("roomId", params.id);
 
-  const checkIfRoomExists = async () => {};
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        console.log("room does not exist");
+        await createNewRoom(params.id);
+      }
+    } catch (error) {
+      console.error("Failed to post data", error);
+    }
+  };
 
   useEffect(() => {
     getMessages();
+    checkIfRoomExists();
   }, []);
   return (
     <ChatWindow>

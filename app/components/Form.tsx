@@ -1,6 +1,7 @@
 "use client";
 import {useRouter} from "next/navigation";
 import {useRef, useState} from "react";
+import createNewRoom from "../lib/createNewRoom";
 
 const Form = () => {
   const router = useRouter();
@@ -8,36 +9,16 @@ const Form = () => {
 
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
-  const postData = async () => {
-    // Removed the form parameter if not using it from outside
-    try {
-      console.log("posting data");
-      const res = await fetch("/api/rooms", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({name: name}),
-      });
 
-      // Throw error with status code in case Fetch API req failed
-      if (!res.ok) {
-        throw new Error(res.status.toString());
-      }
-
-      const data = await res.json();
-      const resName: string = data.data.name;
-      if (resName) router.push("/room/" + resName);
-    } catch (error) {
-      console.error("Failed to post data", error);
-    }
-  };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (name && name.length > 3) {
-      postData();
+      const response = await createNewRoom(name);
+      console.log(response);
+      if (response?.data?.name) {
+        router.push(`/room/${response.data.name}`);
+      }
     }
   };
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {

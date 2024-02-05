@@ -8,14 +8,16 @@ interface ChatInputProps {
 
 const ChatInput: React.FC<ChatInputProps> = ({onSend}) => {
   const [message, setMessage] = useState("");
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && message.trim() !== "") {
       onSend(message);
       setMessage(""); // Clear the input field after sending the message
     }
   };
+
   return (
-    <div className="absolute bottom-0 w-[100%] rounded-b-xl py-4 p-4 bg-opacity-30 bg-white backdrop-blur-md">
+    <div className="flex-none h-[12%] relative w-[100%] rounded-b-xl p-4 bg-opacity-30 bg-white backdrop-blur-md">
       <div className="flex flex-row justify-between items-center gap-4">
         <input
           type="text"

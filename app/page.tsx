@@ -12,24 +12,29 @@ export default async function Home() {
     <main>
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content text-center">
-          <div className="max-w-md">
-            <h1 className="text-5xl text-primary font-bold">
-              Hello there! I'm bored
-            </h1>
-
-            <p className="py-6 text-white">
-              So making this mini chat room, ik its not new but I'm bored so.
-              Chat anonymously in any of these rooms or create one.
-            </p>
-
-            <div>
-              <Form />
+          <div className="flex flex-col justify-center  items-center">
+            <div className="max-w-md text-center">
+              {" "}
+              <h1 className="text-5xl text-primary font-bold">
+                Hello there! I'm bored
+              </h1>
+              <p className="py-6 text-white">
+                So making this mini chat room, ik its not new but I'm bored so.
+                Chat anonymously in any of these rooms or create one.
+              </p>
+              <div>
+                <Form />
+              </div>
             </div>
-            <div className="m-8 grid grid-rows-8 grid-flow-col gap-4">
+            <div className="m-8 grid grid-rows-4 grid-flow-col gap-4">
               {chatRooms?.map((chatRoom) => {
                 return (
                   <div key={chatRoom._id}>
-                    <Link href={`/room/${chatRoom.name}`}>{chatRoom.name}</Link>
+                    <Link href={`/room/${chatRoom.name}`}>
+                      <button className="btn btn-neutral w-44">
+                        {chatRoom.name}
+                      </button>
+                    </Link>
                   </div>
                 );
               })}
