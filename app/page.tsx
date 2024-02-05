@@ -16,7 +16,7 @@ export default async function Home() {
             <div className="max-w-md text-center">
               {" "}
               <h1 className="text-5xl text-primary font-bold">
-                Hello there! I'm bored
+                Hello there! I&apos;m bored
               </h1>
               <p className="py-6 text-white">
                 So making this mini chat room, ik its not new but I'm bored so.
