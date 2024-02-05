@@ -7,8 +7,14 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        "20p": "20%",
+        "60p": "60%",
+      },
+    },
   },
+
   daisyui: {
     themes: ["forest"],
   },

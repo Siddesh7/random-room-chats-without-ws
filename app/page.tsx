@@ -1,6 +1,13 @@
-import Image from "next/image";
+import {useContext} from "react";
+import {UsernameContext} from "./layout";
+import Form from "./components/Form";
+import ChatRoom, {ChatRooms} from "./models/ChatRoom";
+import dbConnect from "./lib/dbConnect";
+import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const chatRooms = await getAllChatRooms();
+
   return (
     <main>
       <div className="hero min-h-screen bg-base-200">
@@ -9,35 +16,42 @@ export default function Home() {
             <h1 className="text-5xl text-primary font-bold">
               Hello there! I'm bored
             </h1>
+
             <p className="py-6 text-white">
               So making this mini chat room, ik its not new but I'm bored so.
               Chat anonymously in any of these rooms or create one.
             </p>
+
             <div>
-              <button className="btn btn-primary" onClick={}>
-                Sign in{" "}
-              </button>
-              <button className="btn btn-primary"> Create a new Room</button>
+              <Form />
             </div>
-            <div className="flex">
-              <div style={{flex: 1}}>
-                <p>hi</p>
-                <p>hi</p>
-                <p>hi</p>
-                <p>hi</p>
-                <p>hi</p>
-              </div>
-              <div style={{flex: 1}}>
-                <p>hi</p>
-                <p>hi</p>
-                <p>hi</p>
-                <p>hi</p>
-                <p>hi</p>
-              </div>
+            <div className="m-8 grid grid-rows-8 grid-flow-col gap-4">
+              {chatRooms?.map((chatRoom) => {
+                return (
+                  <div key={chatRoom._id}>
+                    <Link href={`/room/${chatRoom.name}`}>{chatRoom.name}</Link>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
     </main>
   );
+}
+
+export async function getAllChatRooms() {
+  await dbConnect();
+
+  /* find all the data in our database */
+  const result = await ChatRoom.find({});
+
+  /* Ensures all objectIds and nested objectIds are serialized as JSON data */
+  const chatRooms = result.map((doc) => {
+    const chatRoom = JSON.parse(JSON.stringify(doc));
+    return chatRoom;
+  });
+
+  return chatRooms.reverse();
 }
